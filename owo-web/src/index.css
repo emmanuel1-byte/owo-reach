@@ -1,0 +1,410 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================================
+   Owó Reach — base + components
+   Typography (from Stitch): Outfit = display/headings/labels,
+   Inter = body copy, IBM Plex Mono = money/codes/references (tabular).
+   Structure comes from hairlines, never floating drop shadows.
+   ========================================================================== */
+
+@layer base {
+  :root {
+    --canvas: #ffffff;
+    --ink: #011617;
+    --ink-container: #081f20;
+    --ink-soft: #45514e;
+    --surface-sunk: #f2f6f5;
+    --hairline: #e2e8e6;
+    --reach: #0c7d5c;
+    --reach-live: #12c28c;
+    --brass: #b5883c;
+    --state-queued: #5c6b68;
+    --state-issued: #b5883c;
+    --state-complete: #0c7d5c;
+    --state-expiring: #c4701c;
+    --state-failed: #9c3b2e;
+    --state-cancelled: #8a8f8b;
+  }
+
+  * {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+    color: var(--ink);
+    background: var(--canvas);
+  }
+
+}
+
+@layer components {
+  /* Money and data are always IBM Plex Mono + tabular numerals */
+  .money,
+  .mono {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1;
+  }
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1;
+  }
+
+  /* Wordmark — Outfit, tracked caps (as Stitch rendered it) */
+  .wordmark {
+    font-family: "Outfit", sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  /* Uppercase tracked labels — Outfit */
+  .label-caps {
+    font-family: "Outfit", sans-serif;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  /* Headings use the Outfit display voice */
+  .font-display {
+    font-family: "Outfit", sans-serif;
+  }
+
+  /* --- Buttons --------------------------------------------------------- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-family: "Outfit", sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 0.75rem 1.5rem;
+    border-radius: 3px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: background-color 0.18s cubic-bezier(0.2, 0, 0, 1),
+      border-color 0.18s ease, color 0.18s ease, opacity 0.18s ease;
+  }
+  .btn:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--ink);
+  }
+  .btn-primary {
+    background: var(--ink);
+    color: #fff;
+    border-color: var(--ink);
+  }
+  .btn-primary:hover {
+    background: var(--ink-container);
+  }
+  .btn-secondary {
+    background: transparent;
+    color: var(--ink);
+    border-color: var(--hairline);
+  }
+  .btn-secondary:hover {
+    background: var(--surface-sunk);
+    border-color: var(--ink);
+  }
+  .btn-reach {
+    background: var(--reach);
+    color: #fff;
+    border-color: var(--reach);
+  }
+  .btn-reach:hover {
+    filter: brightness(0.94);
+  }
+  /* Destructive confirmations only — reuses the failed-state red so the
+     palette stays the one already designed for things going wrong. */
+  .btn-danger {
+    background: var(--state-failed);
+    color: #fff;
+    border-color: var(--state-failed);
+  }
+  .btn-danger:hover {
+    filter: brightness(0.92);
+  }
+
+  /* Square, quiet icon button for row-level actions (edit/remove a
+     beneficiary) — reads as a control on hover without competing with the
+     page's real buttons at rest. */
+  .icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 3px;
+    border: 1px solid transparent;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+  .icon-btn:hover:not(:disabled) {
+    background: var(--surface-sunk);
+    color: var(--ink);
+    border-color: var(--hairline);
+  }
+  .icon-btn:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+  .icon-btn--danger:hover:not(:disabled) {
+    color: var(--state-failed);
+    border-color: var(--state-failed);
+  }
+
+  /* --- Inputs ---------------------------------------------------------- */
+  .field-label {
+    display: block;
+    font-family: "Outfit", sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 0.5rem;
+  }
+  .field {
+    width: 100%;
+    border: 1px solid var(--hairline);
+    border-radius: 3px;
+    padding: 0.7rem 0.85rem;
+    font-size: 15px;
+    font-family: "Inter", sans-serif;
+    color: var(--ink);
+    background: #fff;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .field::placeholder {
+    color: #9aa8a4;
+  }
+  .field:focus {
+    outline: none;
+    border-color: var(--ink);
+    box-shadow: 0 0 0 3px rgba(1, 22, 23, 0.08);
+  }
+  .field[readonly],
+  .field:disabled {
+    background: var(--surface-sunk);
+    color: var(--ink-soft);
+    cursor: default;
+  }
+
+  /* --- State chips ----------------------------------------------------- */
+  .state {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+  .state .dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 9999px;
+    flex: none;
+  }
+  .dot--fill {
+    background: currentColor;
+  }
+  .dot--ring {
+    border: 1.5px solid currentColor;
+    background: transparent;
+  }
+  .s-queued { color: var(--state-queued); }
+  .s-issued { color: var(--state-issued); }
+  .s-complete { color: var(--state-complete); }
+  .s-expiring { color: var(--state-expiring); }
+  .s-failed { color: var(--state-failed); }
+  .s-cancelled { color: var(--state-cancelled); }
+
+  .wash-failed { background: rgba(156, 59, 46, 0.07); }
+  .wash-expiring { background: rgba(196, 112, 28, 0.08); }
+
+  /* --- Rail badges ----------------------------------------------------- */
+  .rail {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    padding: 0.2rem 0.5rem;
+    border-radius: 2px;
+  }
+  .rail-bank {
+    color: var(--ink-soft);
+    border: 1px solid var(--hairline);
+  }
+  .rail-paycode {
+    color: #fff;
+    background: var(--ink);
+  }
+
+  /* --- Sidebar nav ----------------------------------------------------- */
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.7rem 1.5rem;
+    color: var(--ink-soft);
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    border-left: 2px solid transparent;
+    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+  .nav-link:hover {
+    background: var(--surface-sunk);
+    color: var(--ink);
+  }
+  .nav-link.is-active {
+    background: var(--surface-sunk);
+    color: var(--ink);
+    border-left-color: var(--ink);
+    font-weight: 600;
+  }
+
+  /* --- Paycode instrument (the signature) ------------------------------ */
+  .paycode {
+    position: relative;
+    overflow: hidden;
+    background: var(--ink);
+    color: #fff;
+    border-radius: 6px;
+    box-shadow: 0 24px 60px -28px rgba(1, 22, 23, 0.5);
+  }
+  .paycode::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.06;
+    background-image: repeating-linear-gradient(
+        115deg,
+        var(--brass) 0,
+        var(--brass) 1px,
+        transparent 1px,
+        transparent 7px
+      ),
+      repeating-linear-gradient(
+        -115deg,
+        #7fb0a8 0,
+        #7fb0a8 1px,
+        transparent 1px,
+        transparent 9px
+      );
+  }
+  .paycode > * {
+    position: relative;
+  }
+  .paycode .digits {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+  }
+  .seal {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 9999px;
+    border: 1.5px solid var(--brass);
+    color: var(--brass);
+  }
+  .seal-inner {
+    width: 30px;
+    height: 30px;
+    border-radius: 9999px;
+    border: 1px solid rgba(181, 136, 60, 0.6);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .stamp {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.5rem;
+    border: 1.5px solid var(--brass);
+    color: var(--brass);
+    border-radius: 2px;
+    transform: rotate(-7deg);
+  }
+
+  /* --- Ledger ---------------------------------------------------------- */
+  /* Table styling itself now lives in components/ui/table.jsx. This is the
+     double-rule that closes a set of figures — still a plain class because it
+     sits on <div>/<dl> summary rows, not on a table. */
+  .ledger-total {
+    border-top: 3px double var(--ink);
+  }
+
+  /* --- Loading placeholders -------------------------------------------- */
+  /* Shape of the content that's coming, not a spinner in its place — the page
+     doesn't reflow when the data lands. */
+  .skeleton {
+    background-color: var(--surface-sunk);
+    background-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.85) 50%,
+      transparent 100%
+    );
+    background-size: 180% 100%;
+    background-repeat: no-repeat;
+    border-radius: 2px;
+  }
+
+  /* Rows entering a table stagger by index (set as --row on each row), so a
+     list resolves in sequence instead of snapping in as one block. */
+  .row-enter {
+    animation: settle 0.32s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    animation-delay: calc(var(--row, 0) * 40ms);
+  }
+
+  /* Buttons acknowledge the press itself — the only feedback that's guaranteed
+     to arrive before the network does. */
+  .btn:active:not(:disabled) {
+    transform: translateY(1px);
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  .hide-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--hairline);
+    border-radius: 9999px;
+  }
+  .hide-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}

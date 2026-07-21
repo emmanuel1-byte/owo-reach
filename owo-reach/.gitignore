@@ -1,0 +1,11 @@
+node_modules/
+dist/
+data/
+.env
+*.sqlite
+*.log
+.DS_Store
+.claude
+
+# local run-backend.sh logs
+.run/

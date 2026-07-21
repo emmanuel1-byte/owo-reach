@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+/*
+ * Owó Reach design tokens.
+ * Subject: a payments-operations tool for Nigerian organisations.
+ * Direction: calm, ledger-like surfaces; money states carry the only color.
+ * Display: Space Grotesk · Body: Inter · Data/refs/timestamps: IBM Plex Mono.
+ */
+@theme {
+  --color-ink: #14211b; /* near-black green: text */
+  --color-paper: #f6f7f4; /* app background */
+  --color-surface: #ffffff;
+  --color-line: #dde3dc;
+  --color-naira: #0e8a4e; /* success / completed money */
+  --color-naira-soft: #e2f3e9;
+  --color-pending: #b97c10; /* codes issued, transfers in flight */
+  --color-pending-soft: #f9efdb;
+  --color-alert: #b3402e; /* failed / mismatch flags */
+  --color-alert-soft: #f8e7e3;
+
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+body {
+  @apply bg-paper text-ink font-sans antialiased;
+}
+
+/* Money values, references, and timestamps are always mono — scannable like a ledger. */
+.ledger {
+  @apply font-mono tabular-nums;
+}

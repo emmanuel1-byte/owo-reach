@@ -1,0 +1,30 @@
+{
+  "name": "owo-reach",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "bun run --hot server/index.ts",
+    "dev:web": "cd web && bun run dev",
+    "build": "cd web && bun install && bun run build",
+    "start": "NODE_ENV=production bun run server/index.ts",
+    "spike": "bun run scripts/day1-spike.ts",
+    "db:push": "drizzle-kit push",
+    "seed": "bun run server/db/seed.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "bun test",
+    "test:coverage": "bun test --coverage"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.112.3",
+    "@hono/swagger-ui": "^0.6.1",
+    "drizzle-orm": "^0.44.0",
+    "hono": "^4.8.0",
+    "openai": "^6.48.0"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.2.0",
+    "better-sqlite3": "^12.11.1",
+    "drizzle-kit": "^0.31.0",
+    "typescript": "^5.8.0"
+  }
+}
