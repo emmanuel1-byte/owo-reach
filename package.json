@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "bun run --hot server/index.ts",
+    "dev": "bun --watch server/index.ts",
     "dev:web": "cd web && bun run dev",
     "build": "cd web && bun install && bun run build",
     "start": "NODE_ENV=production bun run server/index.ts",

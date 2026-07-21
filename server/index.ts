@@ -3,6 +3,7 @@ import { logger } from "hono/logger";
 import { serveStatic } from "hono/bun";
 import { swaggerUI } from "@hono/swagger-ui";
 import { env } from "./env";
+import { watchEnvFile } from "./lib/envReload";
 import { runsRoute } from "./routes/runs";
 import { beneficiariesRoute } from "./routes/beneficiaries";
 import { banksRoute } from "./routes/banks";
@@ -11,6 +12,8 @@ import { webhooksRoute } from "./routes/webhooks";
 import { eventsRoute } from "./routes/events";
 import { openApiSpec } from "./openapi";
 import { reconcileStaleBeneficiaries } from "./services/reconciliation";
+
+if (!env.isProd) watchEnvFile();
 
 const app = new Hono();
 

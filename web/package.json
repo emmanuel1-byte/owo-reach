@@ -1,9 +1,9 @@
 {
-  "name": "owo-reach",
+  "name": "owo-reach-web",
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "Owó Reach — payout operations console (Vite + React)",
+  "description": "Owo Reach frontend (Vite + React), served by the backend in production",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

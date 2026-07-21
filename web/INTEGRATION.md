@@ -1,22 +1,21 @@
 # Owó Reach — frontend ↔ backend integration
 
-This app talks to the `owo-reach` backend (Bun + Hono) over `/api/*`.
+This app talks to the backend (Bun + Hono, in `server/` at the repository root) over `/api/*`.
 
 ## Running it
 
-1. Start the backend first, on its default port:
+1. Start the backend first, from the repository root:
    ```
-   cd owo-reach   # the backend repo
    bun run dev    # listens on :3000
    ```
-2. In this frontend, install and run:
+2. In this frontend directory (`web/`), install and run:
    ```
-   npm install
-   npm run dev
+   bun install
+   bun run dev
    ```
    Vite's dev server proxies every `/api/*` request to `http://localhost:3000`
    (see `vite.config.js`), so no CORS setup was needed on the backend at all.
-   In production, the backend serves this app's build output itself — same
+   In production, the backend serves this app's build output itself: same
    origin, same story, zero proxy config required.
 
 ## What's wired up

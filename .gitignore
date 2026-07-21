@@ -1,11 +1,14 @@
 node_modules/
 dist/
+dist-ssr/
 data/
 .env
+.env.local
 *.sqlite
 *.log
 .DS_Store
-.claude
+.vite
+.claude/
 
 # local run-backend.sh logs
 .run/
