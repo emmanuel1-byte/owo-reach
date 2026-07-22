@@ -1,11 +1,13 @@
 /**
- * DAY-1 SPIKE — run this before writing any product code.
+ * SPIKE — a live sandbox smoke test.
  *
  *   bun run spike
  *
- * Validates the seven risky integration points in order. Each step prints
- * PASS/FAIL plus the raw Monnify response so failures are self-explanatory.
- * The whole point: know by tonight whether the Paycode plan is viable.
+ * Validates the seven risky Monnify integration points in order. Every step
+ * prints PASS or FAIL; a FAIL prints everything known about it (HTTP status,
+ * Monnify's response code and message, the full raw response body, and the
+ * request body that was sent), so the cause is visible without re-running
+ * anything under a debugger.
  *
  * Prereqs: .env filled with sandbox keys; disbursement wallet funded with
  * sandbox test money (Dashboard → Wallet); nothing else.
@@ -25,25 +27,55 @@ let passed = 0;
 let failed = 0;
 const notes: string[] = [];
 
+/** Indents a multi-line block so it reads as a detail of the FAIL line above it. */
+function indent(text: string, prefix = "       "): string {
+  return text
+    .split("\n")
+    .map((line) => prefix + line)
+    .join("\n");
+}
+
 async function step(name: string, fn: () => Promise<string | void>): Promise<void> {
   process.stdout.write(`\n▶ ${name}\n`);
   try {
     const note = await fn();
     passed++;
-    console.log(`  ✅ PASS${note ? ` — ${note}` : ""}`);
+    console.log(`  PASS${note ? ` - ${note}` : ""}`);
     if (note) notes.push(`${name}: ${note}`);
   } catch (err) {
     failed++;
     if (err instanceof MonnifyError) {
-      console.log(`  ❌ FAIL — [${err.code ?? err.httpStatus}] ${err.message}`);
-      if (err.httpStatus === 404) {
-        console.log(
-          "     ↳ Likely a wrong endpoint path. Check server/monnify/config.ts against",
-        );
-        console.log("       https://developers.monnify.com/api and correct it there.");
+      console.log(`  FAIL - HTTP ${err.httpStatus ?? "?"}, code ${err.code ?? "?"}: ${err.message}`);
+      if (err.requestBody !== undefined) {
+        console.log("     request body sent:");
+        console.log(indent(JSON.stringify(err.requestBody, null, 2)));
       }
+      if (err.responseBody !== undefined) {
+        console.log("     full response body:");
+        console.log(indent(JSON.stringify(err.responseBody, null, 2)));
+      }
+      if (err.code === "99" && /unknown client id|not permitted/i.test(err.message)) {
+        console.log(
+          "     this reads as an account-side permission gap, not a wrong path or payload:",
+        );
+        console.log(
+          "     Monnify's own JSON error format came back (not a generic 404 page), so the",
+        );
+        console.log(
+          "     endpoint is reachable, but this account isn't authorized for it yet. Confirm",
+        );
+        console.log("     with Monnify support that this exact feature is provisioned.");
+      } else if (err.httpStatus === 404) {
+        console.log(
+          "     likely a wrong endpoint path. Check server/monnify/config.ts against",
+        );
+        console.log("     https://developers.monnify.com/api and correct it there.");
+      }
+    } else if (err instanceof Error) {
+      console.log(`  FAIL - ${err.message}`);
+      if (err.stack) console.log(indent(err.stack));
     } else {
-      console.log(`  ❌ FAIL — ${String(err)}`);
+      console.log(`  FAIL - ${String(err)}`);
     }
   }
 }

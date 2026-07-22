@@ -15,6 +15,10 @@ export class MonnifyError extends Error {
     message: string,
     public readonly code?: string,
     public readonly httpStatus?: number,
+    /** The full parsed response body, for callers that want more than `message` (e.g. scripts/spike.ts). */
+    public readonly responseBody?: unknown,
+    /** The request body that was sent, so a failure can be reproduced without re-reading the caller. */
+    public readonly requestBody?: unknown,
   ) {
     super(message);
     this.name = "MonnifyError";
@@ -35,6 +39,7 @@ async function login(): Promise<string> {
       `Auth failed: ${json.responseMessage ?? res.statusText}`,
       json.responseCode,
       res.status,
+      json,
     );
   }
   cachedToken = {
@@ -79,12 +84,14 @@ export async function monnify<T>(
   }
 
   const json = (await res.json().catch(() => null)) as MonnifyResponse<T> | null;
-  if (!json) throw new MonnifyError(`Non-JSON response from ${path}`, undefined, res.status);
+  if (!json) throw new MonnifyError(`Non-JSON response from ${path}`, undefined, res.status, undefined, init.body);
   if (!res.ok || !json.requestSuccessful) {
     throw new MonnifyError(
       `${path} → ${json.responseMessage ?? res.statusText}`,
       json.responseCode,
       res.status,
+      json,
+      init.body,
     );
   }
   return json.responseBody;

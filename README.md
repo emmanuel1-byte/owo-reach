@@ -23,7 +23,7 @@ server/          Bun + Hono API
   db/            Drizzle schema, client, seed script
   ai.ts          provider-agnostic AI client used for ingestion and the pre-flight brief
 web/             Vite + React frontend (TanStack Query, Tailwind, Radix UI)
-scripts/         day1-spike.ts (sandbox smoke test), run-backend.sh (one-command boot + tunnel)
+scripts/         spike.ts (sandbox smoke test), run-backend.sh (one-command boot + tunnel)
 docs/            product spec and design rationale
 tests/           bun:test suite, mirrors the server/ layout
 data/            local SQLite file, created on first run, never committed
@@ -70,7 +70,7 @@ If you see `TypeError: Cannot open database because the directory does not exist
 bun run spike
 ```
 
-This walks through the seven riskiest integration points in order: authentication, fetching banks, name enquiry, a single transfer (including OTP handling if sandbox MFA kicks in), paycode creation, a Collections checkout, and webhook signature validation. It prints a pass or fail report so you know exactly which of your sandbox credentials or endpoints need attention before you rely on them in a demo. See `scripts/day1-spike.ts`.
+This walks through the seven riskiest integration points in order: authentication, fetching banks, name enquiry, a single transfer (including OTP handling if sandbox MFA kicks in), paycode creation, a Collections checkout, and webhook signature validation. It prints a pass or fail report so you know exactly which of your sandbox credentials or endpoints need attention before you rely on them in a demo. See `scripts/spike.ts`.
 
 ### Webhooks in local development
 

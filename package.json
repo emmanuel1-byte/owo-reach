@@ -7,7 +7,7 @@
     "dev:web": "cd web && bun run dev",
     "build": "cd web && bun install && bun run build",
     "start": "NODE_ENV=production bun run server/index.ts",
-    "spike": "bun run scripts/day1-spike.ts",
+    "spike": "bun run scripts/spike.ts",
     "db:push": "drizzle-kit push",
     "seed": "bun run server/db/seed.ts",
     "typecheck": "tsc --noEmit",
